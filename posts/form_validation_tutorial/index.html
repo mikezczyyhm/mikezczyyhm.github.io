@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>Form Validation Tutorial: Validating Text Input and Numeric Input ::
+      Michael&#39;s
+      programming blog</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description"
+      content="This tutorial will guide you through implementing form validation for two input fields: a text input and a numeric input. We'll use a Java-like language and focus on input sanitization and numerical range checking." />
+    <meta name="keywords"
+      content />
+    <meta name="robots" content="noodp" />
+    <link rel="canonical"
+      href="https://mikezczyyhm.github.io/posts/form_validation_tutorial/" />
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/style.css">
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/green.css">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+      href="https://mikezczyyhm.github.io/img/apple-touch-icon-144-precomposed.png">
+
+    <link rel="shortcut icon"
+      href="https://mikezczyyhm.github.io/img/favicon/green.png">
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title"
+      content="Form Validation Tutorial: Validating Text Input and Numeric Input ::  Michael&#39;s programming blog — " />
+    <meta name="twitter:description"
+      content="This tutorial will guide you through implementing form validation for two input fields: a text input and a numeric input. We'll use a Java-like language and focus on input sanitization and numerical range checking." />
+    <meta name="twitter:site" content="https://mikezczyyhm.github.io/" />
+    <meta name="twitter:creator" content />
+    <meta name="twitter:image" content>
+
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title"
+      content="Form Validation Tutorial: Validating Text Input and Numeric Input ::  Michael&#39;s programming blog — ">
+    <meta property="og:description"
+      content="This tutorial will guide you through implementing form validation for two input fields: a text input and a numeric input. We'll use a Java-like language and focus on input sanitization and numerical range checking." />
+    <meta property="og:url"
+      content="https://mikezczyyhm.github.io/posts/form_validation_tutorial/" />
+    <meta property="og:site_name"
+      content="Form Validation Tutorial: Validating Text Input and Numeric Input" />
+    <meta property="og:image" content>
+    <meta property="og:image:width" content="2048">
+    <meta property="og:image:height" content="1024">
+
+    <meta property="article:published_time"
+      content="2024-10-18 00:00:00 &#43;0000 UTC" />
+
+  </head>
+  <body class>
+
+    <div class="container center headings--one-size">
+
+      <header class="header">
+        <div class="header__inner">
+          <div class="header__logo">
+            <a href="https://mikezczyyhm.github.io/">
+              <div class="logo">
+                Michael&#39;s programming blog
+              </div>
+            </a>
+          </div>
+          <div class="menu-trigger">menu</div>
+        </div>
+
+        <nav class="menu">
+          <ul class="menu__inner menu__inner--desktop">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+
+          <ul class="menu__inner menu__inner--mobile">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+        </nav>
+
+      </header>
+
+      <div class="content">
+
+        <div class="post">
+          <h1 class="post-title">
+            <a
+              href="https://mikezczyyhm.github.io/posts/form_validation_tutorial/">Form
+              Validation Tutorial: Validating Text Input and Numeric
+              Input</a></h1>
+          <div class="post-meta">
+
+            <span class="post-date">
+              2020-10-18
+            </span>
+
+          </div>
+
+          <span class="post-tags">
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/java/">Java</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/android/">Android</a>&nbsp;
+
+          </span>
+
+          <div class="post-content">
+            <h3 id="introduction">Introduction</h3>
+            <p>This tutorial will guide you through implementing form validation
+              for two input fields: a text input and a numeric input. We'll use
+              a Java-like language and focus on input sanitization and numerical
+              range checking.</p>
+
+            <h3 id="setting-up-variables">Setting Up Variables</h3>
+            <p>Start by getting the input values from your form:</p>
+            <div class="highlight"><pre tabindex="0"
+                style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java">
+String numericInputString = numericInput.getText().toString();
+String textInputString = textInput.getText().toString();
+boolean isValid = true;
+            </code></pre></div>
+
+            <h3 id="validating-text-input">Validating Text Input</h3>
+            <p>We'll check if the text input is empty or contains invalid
+              characters:</p>
+            <div class="highlight"><pre tabindex="0"
+                style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java">
+if (TextUtils.isEmpty(textInputString) || !textInputString.matches(".*[a-zA-Z0-9].*")) {
+    textInput.setError("Invalid Text Input");
+    isValid = false;
+} else {
+    textInput.setError(null);
+}
+            </code></pre></div>
+
+            <h3 id="validating-numeric-input">Validating Numeric Input</h3>
+            <p>Next, we'll validate the numeric input:</p>
+            <div class="highlight"><pre tabindex="0"
+                style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java">
+if (isNullOrEmpty(input)) {
+  inputField.setError("Invalid Input: Empty or null");
+  isValid = false;
+} else {
+  try {
+      value = Integer.parseInt(input);
+      if (value < MIN_VALUE || value >= MAX_VALUE || !isRelativelyPrime(value, MAX_VALUE)) {
+          inputField.setError("Invalid Value: Out of range or not relatively prime");
+          isValid = false;
+      }
+  } catch (NumberFormatException e) {
+      inputField.setError("Invalid Input: Not a number");
+      isValid = false;
+  }
+}
+            </code></pre></div>
+
+            <h3 id="handling-the-result">Handling the Result</h3>
+            <p>After validation, you can use the `isValid` boolean to determine
+              if the form can be submitted or if you need to show error messages
+              to the user.</p>
+
+            <h3 id="additional-notes">Additional Notes</h3>
+            <ul>
+              <li>Ensure you implement or import the `TextUtils.isEmpty()`
+                method.</li>
+              <li>This code assumes you have input fields named `numericInput`
+                and `textInput`. Adjust these names according to your actual
+                form structure.</li>
+              <li>Error handling is done by setting error messages on the input
+                fields. You may need to adjust this based on your UI
+                framework.</li>
+            </ul>
+
+            <h3 id="conclusion">Conclusion</h3>
+            <p>This tutorial covered basic form validation techniques, including
+              checking for empty inputs, validating text against a pattern,
+              parsing and validating numerical inputs, and performing specific
+              mathematical checks (like the GCD test for coprimality). You can
+              expand on this foundation to create more complex validation
+              schemes as needed for your application.</p>
+          </div>
+
+          <h3>Did you like it? Share!</h3>
+          <script type="text/javascript"
+            src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a1c5667151c1f30"></script>
+          <div class="addthis_inline_share_toolbox"></div>
+
+          <div class="pagination">
+            <div class="pagination__title">
+              <span class="pagination__title-h"></span>
+              <hr />
+            </div>
+            <div class="pagination__buttons">
+
+              <span class="button next">
+                <a
+                  href="https://mikezczyyhm.github.io/posts/impostor_syndrome/">
+                  <span class="button__text">Impostor Syndrome for Software
+                    Developers</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer class="footer">
+        <div class="footer__inner">
+          <div class="copyright copyright--user">
+            <span>(c) Michael 2020</span>
+          </div>
+        </footer>
+
+        <script src="https://mikezczyyhm.github.io/assets/main.js"></script>
+        <script src="https://mikezczyyhm.github.io/assets/prism.js"></script>
+
+      </div>
+
+    </body>
+  </html>
