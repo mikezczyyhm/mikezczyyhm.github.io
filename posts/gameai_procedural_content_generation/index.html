@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>Hierarchical Procedural Content Generation: Building Dynamic Game Worlds ::
+      Michael&#39;s
+      programming blog</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description"
+      content="Exploring hierarchical PCG techniques using layered Perlin noise and configurable processing rules to create diverse, seamless multi-biome landscapes in Unity." />
+    <meta name="keywords"
+      content />
+    <meta name="robots" content="noodp" />
+    <link rel="canonical"
+      href="https://mikezczyyhm.github.io/posts/gameai_procedural_content_generation/" />
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/style.css">
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/green.css">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+      href="https://mikezczyyhm.github.io/img/apple-touch-icon-144-precomposed.png">
+
+    <link rel="shortcut icon"
+      href="https://mikezczyyhm.github.io/img/favicon/green.png">
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title"
+      content="Hierarchical Procedural Content Generation: Building Dynamic Game Worlds ::  Michael&#39;s programming blog — " />
+    <meta name="twitter:description"
+      content="Exploring hierarchical PCG techniques using layered Perlin noise and configurable processing rules to create diverse, seamless multi-biome landscapes in Unity." />
+    <meta name="twitter:site" content="https://mikezczyyhm.github.io/" />
+    <meta name="twitter:creator" content />
+    <meta name="twitter:image" content>
+
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title"
+      content="Hierarchical Procedural Content Generation: Building Dynamic Game Worlds ::  Michael&#39;s programming blog — ">
+    <meta property="og:description"
+      content="Exploring hierarchical PCG techniques using layered Perlin noise and configurable processing rules to create diverse, seamless multi-biome landscapes in Unity." />
+    <meta property="og:url"
+      content="https://mikezczyyhm.github.io/posts/gameai_procedural_content_generation/" />
+    <meta property="og:site_name"
+      content="Hierarchical Procedural Content Generation: Building Dynamic Game Worlds" />
+    <meta property="og:image" content>
+    <meta property="og:image:width" content="2048">
+    <meta property="og:image:height" content="1024">
+    <meta property="article:published_time"
+      content="2021-05-12 00:00:00 &#43;0000 UTC" />
+    <link href="/index.xml" rel="alternate" type="application/rss+xml"
+      title="Michael&#39;s programming blog" />
+
+  </head>
+  <body class>
+
+    <div class="container center headings--one-size">
+
+      <header class="header">
+        <div class="header__inner">
+          <div class="header__logo">
+            <a href="https://mikezczyyhm.github.io/">
+              <div class="logo">
+                Michael&#39;s programming blog
+              </div>
+            </a>
+          </div>
+          <div class="menu-trigger">menu</div>
+        </div>
+
+        <nav class="menu">
+          <ul class="menu__inner menu__inner--desktop">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+
+          <ul class="menu__inner menu__inner--mobile">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+        </nav>
+
+      </header>
+
+      <div class="content">
+
+        <div class="post">
+          <h1 class="post-title">
+            <a
+              href="https://mikezczyyhm.github.io/posts/gameai_procedural_content_generation/">Hierarchical Procedural Content Generation: Building Dynamic Game Worlds</a></h1>
+          <div class="post-meta">
+            <span class="post-date">
+              2021-05-12
+            </span>
+
+          </div>
+
+          <span class="post-tags">
+
+            #<a href="https://mikezczyyhm.github.io/tags/programming-theory/">Programming theory</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/game-ai/">Game AI</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/algorithms/">Algorithms</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/procedural-generation/">Procedural Generation</a>&nbsp;
+
+          </span>
+
+          <div class="post-content">
+            <div>
+              <h2 id="introduction">Introduction</h2>
+<p>Procedural Content Generation (PCG) has become a cornerstone of modern game development, enabling developers to create vast, diverse worlds without manually crafting every detail. In this project, I implemented a hierarchical PCG system that generates realistic multi-biome terrain using layered Perlin noise and configurable processing rules. The system creates seamless transitions between distinct geographical features including mountains, hills, and swamplands.</p>
+
+<h2 id="core-design-philosophy">Core Design Philosophy</h2>
+<p>The foundation of this PCG system is built on <strong>hierarchical composition</strong> and <strong>modular design</strong>. Rather than using a single noise function to generate terrain, the system employs a tree-like structure where each node represents a different aspect of the landscape. This approach offers several key advantages:</p>
+
+<ul>
+<li><strong>Scalability</strong>: New biomes and features can be added without modifying existing code</li>
+<li><strong>Controllability</strong>: Each layer can be fine-tuned independently</li>
+<li><strong>Reusability</strong>: Common patterns can be shared across different biomes</li>
+<li><strong>Natural Blending</strong>: Smooth transitions occur naturally through the hierarchy</li>
+</ul>
+
+<h2 id="biome-segmentation-strategy">Biome Segmentation Strategy</h2>
+<p>The terrain generation begins with a <code>BaseTerrain</code> root node that uses a TrapezoidFunction to divide the noise space into three distinct bands:</p>
+
+<h3 id="mountains-065-095">Mountains (0.65-0.95)</h3>
+<p>The mountain biome occupies the highest noise values, representing elevated terrain with dramatic height variations. The core mountain region spans from 0.65 to 0.95, with a fade-in transition zone from 0.6 to 0.65. High-frequency Perlin noise (scalar value of 80) is multiplied onto the base terrain to create sharp peaks and deep valleys characteristic of mountainous regions.</p>
+
+<h3 id="hills-035-055">Hills (0.35-0.55)</h3>
+<p>The hills biome represents the middle ground between mountains and lowlands. With a core range from 0.35 to 0.55, it includes both fade-in (0.3-0.35) and fade-out (0.55-0.6) transition zones. This biome uses medium-frequency processing through a MappingCurve to create rolling terrain with moderate elevation changes.</p>
+
+<h3 id="swamp-01-02">Swamp (0.1-0.2)</h3>
+<p>The swamp biome occupies the lowest noise values, creating flat wetland areas. The core swamp region spans from 0.1 to 0.2, with fade-in (0-0.1) and fade-out (0.2-0.3) zones. Low-frequency noise (scalar value of 31.4) ensures the characteristic flat, waterlogged appearance of swamplands.</p>
+
+<h2 id="layered-detail-enhancement">Layered Detail Enhancement</h2>
+<p>Each biome employs specialized child nodes to add distinctive features:</p>
+
+<h3 id="mountainrocks-layer">MountainRocks Layer</h3>
+<p>This layer adds fine-grained rocky texture to mountain surfaces using very high-frequency noise (scalar value of 100). The multiplicative combination creates realistic rock formations and cliff faces that enhance the rugged mountain aesthetic.</p>
+
+<h3 id="hillravines-layer">HillRavines Layer</h3>
+<p>Medium-scale noise (scalar value of 15) creates erosion patterns and gentle ravines throughout the hills biome. This layer simulates natural water erosion that would occur over geological time scales, adding realism to the rolling hill terrain.</p>
+
+<h3 id="swamppuddles-layer">SwampPuddles Layer</h3>
+<p>Fine-grained noise (scalar value of 100) generates small water variations and marshy details within the swamp biome. Despite the high frequency, the overall terrain remains flat due to the multiplicative application on already low base values.</p>
+
+<h2 id="seamless-transition-techniques">Seamless Transition Techniques</h2>
+<p>One of the most challenging aspects of multi-biome generation is creating natural transitions that avoid jarring boundaries. The system addresses this through several sophisticated techniques:</p>
+
+<h3 id="trapezoid-function-blending">Trapezoid Function Blending</h3>
+<p>The TrapezoidFunction's fade ranges (0.6-0.65 for mountains, 0.3-0.35 for hills) enable gradual biome transitions. Rather than hard cutoffs, these transition zones blend biome characteristics smoothly, creating realistic ecological boundaries.</p>
+
+<h3 id="multiplicative-combination">Multiplicative Combination</h3>
+<p>All noise values are combined using multiplicative operations (CombineType=3), ensuring that the final output remains within the 0-1 range. This prevents unrealistic spikes or valleys that could break immersion.</p>
+
+<h3 id="hierarchical-influence">Hierarchical Influence</h3>
+<p>Parent nodes influence their children through the hierarchy, creating coherent regional characteristics while allowing for local variation. This ensures that mountain rocks only appear in mountainous regions, while swamp puddles are confined to wetland areas.</p>
+
+<h2 id="configuration-architecture">Configuration Architecture</h2>
+<p>The system employs a tree-like configuration structure that mirrors the hierarchical generation process:</p>
+
+<pre><code>BaseTerrain
+├─ Mountains (Additive)
+│  └─ MountainRocks (Multiplicative)
+├─ Hills (Transitional Bandpass)
+│  └─ HillRavines (Multiplicative)
+└─ Swamp (Subtractive)
+   └─ SwampPuddles (Multiplicative)
+</code></pre>
+
+<p>This configuration approach allows for easy modification of biome parameters without code changes. Designers can adjust noise frequencies, transition zones, and combination methods through external configuration files.</p>
+
+<h2 id="technical-implementation-highlights">Technical Implementation Highlights</h2>
+
+<h3 id="improved-perlin-noise">Improved Perlin Noise</h3>
+<p>The system utilizes an enhanced Perlin noise implementation that provides better distribution and reduces artifacts common in standard noise functions. This improvement is particularly noticeable in the transition zones where different noise frequencies interact.</p>
+
+<h3 id="unity-terrain-integration">Unity Terrain Integration</h3>
+<p>The PCG system integrates seamlessly with Unity's terrain system, supporting real-time generation and modification. The terrain can be regenerated with different parameters, making it ideal for both design iteration and dynamic content creation.</p>
+
+<h3 id="performance-optimization">Performance Optimization</h3>
+<p>Despite the complex layered approach, the system maintains good performance through efficient noise generation and strategic caching. The hierarchical structure also allows for level-of-detail optimizations where distant terrain can use simplified generation rules.</p>
+
+<h2 id="applications-and-extensions">Applications and Extensions</h2>
+<p>This PCG system forms the foundation for numerous game development applications:</p>
+
+<ul>
+<li><strong>Open World Games</strong>: Generate vast landscapes with varied biomes for exploration</li>
+<li><strong>Strategy Games</strong>: Create balanced maps with distinct resource regions</li>
+<li><strong>Simulation Games</strong>: Provide realistic terrain for ecological or city-building simulations</li>
+<li><strong>Educational Tools</strong>: Demonstrate geological processes and biome interactions</li>
+</ul>
+
+<p>The modular design makes it straightforward to add new biomes (deserts, tundra, forests) or enhance existing ones with additional detail layers (vegetation, minerals, water features).</p>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer class="footer">
+        <div class="footer__inner">
+          <div class="copyright copyright--user">
+            <span>(c) Michael 2021</span>
+          </div>
+        </div>
+      </footer>
+
+      <script src="https://mikezczyyhm.github.io/assets/main.js"></script>
+      <script src="https://mikezczyyhm.github.io/assets/prism.js"></script>
+
+    </div>
+
+  </body>
+</html>

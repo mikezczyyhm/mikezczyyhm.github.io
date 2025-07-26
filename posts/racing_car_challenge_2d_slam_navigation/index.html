@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>Racing Car Challenge: 2D SLAM &amp; Navigation ::
+      Michael&#39;s
+      programming blog</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description"
+      content="Race cars must navigate an unknown track with obstacles (cones/barriers) to reach checkpoints. The car starts at an arbitrary position with unknown obstacles. Sensors detect nearby obstacles within 50m radius." />
+    <meta name="keywords"
+      content />
+    <meta name="robots" content="noodp" />
+    <link rel="canonical"
+      href="https://mikezczyyhm.github.io/posts/racing_car_challenge_2d_slam_navigation/" />
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/style.css">
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/green.css">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+      href="https://mikezczyyhm.github.io/img/apple-touch-icon-144-precomposed.png">
+
+    <link rel="shortcut icon"
+      href="https://mikezczyyhm.github.io/img/favicon/green.png">
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title"
+      content="Racing Car Challenge: 2D SLAM &amp; Navigation ::  Michael&#39;s programming blog — " />
+    <meta name="twitter:description"
+      content="Race cars must navigate an unknown track with obstacles (cones/barriers) to reach checkpoints. The car starts at an arbitrary position with unknown obstacles. Sensors detect nearby obstacles within 50m radius." />
+    <meta name="twitter:site" content="https://mikezczyyhm.github.io/" />
+    <meta name="twitter:creator" content />
+    <meta name="twitter:image" content>
+
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title"
+      content="Racing Car Challenge: 2D SLAM &amp; Navigation ::  Michael&#39;s programming blog — ">
+    <meta property="og:description"
+      content="Race cars must navigate an unknown track with obstacles (cones/barriers) to reach checkpoints. The car starts at an arbitrary position with unknown obstacles. Sensors detect nearby obstacles within 50m radius." />
+    <meta property="og:url"
+      content="https://mikezczyyhm.github.io/posts/racing_car_challenge_2d_slam_navigation/" />
+    <meta property="og:site_name"
+      content="Racing Car Challenge: 2D SLAM &amp; Navigation" />
+    <meta property="og:image" content>
+    <meta property="og:image:width" content="2048">
+    <meta property="og:image:height" content="1024">
+
+    <meta property="article:published_time"
+      content="2025-07-25 00:00:00 &#43;0000 UTC" />
+
+  </head>
+  <body class>
+
+    <div class="container center headings--one-size">
+
+      <header class="header">
+        <div class="header__inner">
+          <div class="header__logo">
+            <a href="https://mikezczyyhm.github.io/">
+              <div class="logo">
+                Michael&#39;s programming blog
+              </div>
+            </a>
+          </div>
+          <div class="menu-trigger">menu</div>
+        </div>
+
+        <nav class="menu">
+          <ul class="menu__inner menu__inner--desktop">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+
+          <ul class="menu__inner menu__inner--mobile">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+        </nav>
+
+      </header>
+
+      <div class="content">
+
+        <div class="post">
+          <h1 class="post-title">
+            <a
+              href="https://mikezczyyhm.github.io/posts/racing_car_challenge_2d_slam_navigation/">Racing Car Challenge: 2D SLAM &amp; Navigation</a></h1>
+          <div class="post-meta">
+
+            <span class="post-date">
+              2021-01-15
+            </span>
+
+          </div>
+
+          <span class="post-tags">
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/programming-theory/">Programming theory</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/robotics/">Robotics</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/SLAM/">SLAM</a>&nbsp;
+          </span>
+
+          <div class="post-content">
+            <h3 id="project-background">Project Background</h3>
+            <p><em>Race cars must navigate an unknown track with obstacles (cones/barriers) to reach checkpoints. The car starts at an arbitrary position (treated as (0,0)) with unknown obstacles. Sensors detect nearby obstacles within 50m radius.</em></p>
+
+            <p><strong>Key Components:</strong></p>
+            <ol>
+              <li><strong>SLAM Module</strong>
+                <ul>
+                  <li>Estimates car position and obstacle locations</li>
+                  <li>Processes sensor measurements and movement data</li>
+                  <li>Maintains uncertainty estimates via covariance matrix</li>
+                </ul>
+              </li>
+              <li><strong>Navigation Planner</strong>
+                <ul>
+                  <li>Generates racing commands: <code>move</code> or <code>cross_checkpoint</code></li>
+                  <li>Avoids collisions with obstacles</li>
+                  <li>Optimizes path to checkpoints</li>
+                </ul>
+              </li>
+            </ol>
+
+            <h3 id="slam-pseudocode">SLAM Setup</h3>
+            <div class="highlight"><pre tabindex="0"
+                style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext">
+CLASS SLAM:
+  INITIALIZE:
+    state = [0, 0, 0]  // [x, y, heading]
+    covariance = 3x3 zero matrix
+    obstacles = {}  // Obstacle store
+    // Noise parameters
+    measurement_dist_noise
+    steering_noise
+
+  PROCESS_MEASUREMENT(obstacle_id, data):
+    IF obstacle_id NEW:
+        ADD_NEW_OBSTACLE(obstacle_id, data)
+    ELSE:
+        UPDATE_EXISTING_OBSTACLE(obstacle_id, data)
+
+  PROCESS_MOVEMENT(distance, steering):
+    // Predict new position
+    new_heading = current_heading + steering + noise
+    new_x = x + distance*cos(new_heading) + noise
+    new_y = y + distance*sin(new_heading) + noise
+    UPDATE_STATE_AND_COVARIANCE()
+
+  GET_COORDINATES():
+    RETURN {'car': (x,y), 'obstacle1': (x1,y1), ...}
+            </code></pre></div>
+
+            <h3 id="racing-planner-pseudocode">Racing Path Planner</h3>
+            <div class="highlight"><pre tabindex="0"
+                style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext">
+CLASS RACING_PLANNER(max_move, max_steer):
+  INITIALIZE:
+    slam = SLAM()
+    last_action = None
+    obstacle_radii= {}  // Stores obstacle sizes
+
+  NEXT_MOVE(measurements, checkpoint):
+    // 1. Process previous movement
+    IF last_action WAS 'move':
+        EXTRACT distance, steering
+        slam.PROCESS_MOVEMENT(distance, steering)
+  
+    // 2. Update obstacle map
+    FOR EACH measurement:
+        STORE obstacle_radii[id] = data.radius
+    slam.PROCESS_MEASUREMENTS(measurements)
+  
+    // 3. Get current state
+    state = slam.GET_COORDINATES()
+    car_pos = state['car']
+    heading = slam.state[2]  // Current orientation
+  
+    // 4. Check checkpoint reach
+    IF DIST(car_pos, checkpoint) < ckpthreshold:
+        RETURN 'cross_checkpoint * x y'
+  
+    // 5. Calculate ideal path
+    target_angle = ATAN2(checkpoint.y - car.y, checkpoint.x - car.x)
+    steering = NORMALIZE_ANGLE(target_angle - heading)
+    steering = CLAMP(steering, ±max_steer)
+    distance = MIN(max_move, DIST(car_pos, checkpoint))
+  
+    // 6. Collision check
+    next_pos = CALC_NEXT_POS(car_pos, heading, steering, distance)
+    collision = FALSE
+  
+    FOR EACH obstacle IN state:
+        IF CHECK_COLLISION(car_pos, next_pos, obstacle.pos, radius):
+            collision = TRUE
+            BREAK
+  
+    // 7. Determine action
+    IF NOT collision:
+        RETURN 'move {distance} {steering}'
+    ELSE:
+        // Avoidance maneuver
+        safe_dist = CALC_SAFE_DISTANCE(car_pos, heading+steering, state)
+        alt_steering = CHOOSE_AVOIDANCE_DIRECTION(steering)
+      
+        IF AVOIDANCE_PATH_SAFE(alt_steering, safe_dist):
+            RETURN 'move {safe_dist} {alt_steering}'
+        ELSE:
+            RETURN 'move {safe_dist} {steering}'  // Proceed cautiously
+            </code></pre></div>
+
+            <h3 id="key-racing-adaptations">Some Thoughts</h3>
+            <ol>
+              <li><strong>Movement Physics</strong>
+                <ul>
+                  <li>Cars turn <em>then</em> move</li>
+                  <li>Steering angle limits simulate real vehicle constraints</li>
+                </ul>
+              </li>
+              <li><strong>Collision Detection</strong>
+                <div class="highlight"><pre tabindex="0"
+                    style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plaintext" data-lang="plaintext">
+There are many ways to check for collisions:
+1. Circle-Circle Intersection:
+   - Checks collision between two circular objects (car vs cone)
+        FUNCTION circle_collision(car_pos, car_radius, obstacle_pos, obstacle_radius):
+            distance = DIST(car_pos, obstacle_pos)
+            RETURN distance <= (car_radius + obstacle_radius)
+ 
+2. Segment-Circle Intersection:
+   - Checks if car's movement path collides with obstacles
+        FUNCTION segment_circle_collision(start_pos, end_pos, obstacle_pos, radius):
+            closest_point = CLOSEST_POINT_ON_SEGMENT(start_pos, end_pos, obstacle_pos)
+            RETURN DIST(closest_point, obstacle_pos) <= radius
+ 
+3. Bounding Box (AABB):
+   - Fast check using axis-aligned rectangles
+        FUNCTION aabb_collision(box1_min, box1_max, box2_min, box2_max):
+            RETURN (box1_max.x > box2_min.x AND 
+                    box1_min.x < box2_max.x AND 
+                    box1_max.y > box2_min.y AND 
+                    box1_min.y < box2_max.y)
+ 
+4. Ray Casting:
+   - Checks if path intersects obstacle boundaries
+        FUNCTION ray_circle_intersect(ray_origin, ray_dir, center, radius):
+            oc = ray_origin - center
+            a = DOT(ray_dir, ray_dir)
+            b = 2 * DOT(oc, ray_dir)
+            c = DOT(oc, oc) - radius*radius
+            discriminant = b*b - 4*a*c
+            RETURN discriminant >= 0
+
+
+                </code></pre></div>
+              </li>
+              <li><strong>Dynamic Obstacle Handling</strong>
+                <ul>
+                  <li>Safety margin = obstacle_radii + 1m</li>
+                  <li>Avoidance priority:
+                    <ol>
+                      <li>Reduce distance to safe threshold</li>
+                      <li>Steer 45° away from obstacles</li>
+                      <li>Fallback to cautious advance</li>
+                    </ol>
+                  </li>
+                </ul>
+              </li>
+              
+              </li>
+            </ol>
+
+            <h3 id="implementation-considerations">Implementation Considerations</h3>
+            <p>The SLAM algorithm combines odometry and landmark measurements to maintain accurate position estimates in the presence of sensor noise. The Extended Kalman Filter (EKF) framework naturally handles the nonlinear motion model of the racing car.</p>
+
+            <p>Navigation planning balances speed and safety by calculating collision-free paths while maintaining competitive racing lines. The planner's reactive behavior ensures robust obstacle avoidance even with imperfect state estimates.</p>
+
+            
+          </div>
+
+          <h3>Did you like it? Share!</h3>
+          <script type="text/javascript"
+            src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a1c5667151c1f30"></script>
+          <div class="addthis_inline_share_toolbox"></div>
+
+          <div class="pagination">
+            <div class="pagination__title">
+              <span class="pagination__title-h"></span>
+              <hr />
+            </div>
+            <div class="pagination__buttons">
+
+              <span class="button previous">
+                <a
+                  href="https://mikezczyyhm.github.io/posts/form_validation_tutorial/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">Form Validation Tutorial: Validating Text Input and Numeric Input</span>
+                </a>
+              </span>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer class="footer">
+        <div class="footer__inner">
+          <div class="copyright copyright--user">
+            <span>(c) Michael 2021</span>
+          </div>
+        </footer>
+
+        <script src="https://mikezczyyhm.github.io/assets/main.js"></script>
+        <script src="https://mikezczyyhm.github.io/assets/prism.js"></script>
+
+      </div>
+
+    </body>
+  </html>

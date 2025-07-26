@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>GameAI RaceTrack: Intelligent Vehicle Control with Fuzzy Logic ::
+      Michael&#39;s
+      programming blog</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description"
+      content="Implementing intelligent racing vehicle behavior using fuzzy logic systems for autonomous track navigation, speed control, and collision avoidance in Unity." />
+    <meta name="keywords"
+      content />
+    <meta name="robots" content="noodp" />
+    <link rel="canonical"
+      href="https://mikezczyyhm.github.io/posts/gameai_racetrack_fuzzy_control/" />
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/style.css">
+
+    <link rel="stylesheet"
+      href="https://mikezczyyhm.github.io/assets/green.css">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+      href="https://mikezczyyhm.github.io/img/apple-touch-icon-144-precomposed.png">
+
+    <link rel="shortcut icon"
+      href="https://mikezczyyhm.github.io/img/favicon/green.png">
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title"
+      content="GameAI RaceTrack: Intelligent Vehicle Control with Fuzzy Logic ::  Michael&#39;s programming blog — " />
+    <meta name="twitter:description"
+      content="Implementing intelligent racing vehicle behavior using fuzzy logic systems for autonomous track navigation, speed control, and collision avoidance in Unity." />
+    <meta name="twitter:site" content="https://mikezczyyhm.github.io/" />
+    <meta name="twitter:creator" content />
+    <meta name="twitter:image" content>
+
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title"
+      content="GameAI RaceTrack: Intelligent Vehicle Control with Fuzzy Logic ::  Michael&#39;s programming blog — ">
+    <meta property="og:description"
+      content="Implementing intelligent racing vehicle behavior using fuzzy logic systems for autonomous track navigation, speed control, and collision avoidance in Unity." />
+    <meta property="og:url"
+      content="https://mikezczyyhm.github.io/posts/gameai_racetrack_fuzzy_control/" />
+    <meta property="og:site_name"
+      content="GameAI RaceTrack: Intelligent Vehicle Control with Fuzzy Logic" />
+    <meta property="og:image" content>
+    <meta property="og:image:width" content="2048">
+    <meta property="og:image:height" content="1024">
+    <meta property="article:published_time"
+      content="2021-04-15 00:00:00 &#43;0000 UTC" />
+    <link href="/index.xml" rel="alternate" type="application/rss+xml"
+      title="Michael&#39;s programming blog" />
+
+  </head>
+  <body class>
+
+    <div class="container center headings--one-size">
+
+      <header class="header">
+        <div class="header__inner">
+          <div class="header__logo">
+            <a href="https://mikezczyyhm.github.io/">
+              <div class="logo">
+                Michael&#39;s programming blog
+              </div>
+            </a>
+          </div>
+          <div class="menu-trigger">menu</div>
+        </div>
+
+        <nav class="menu">
+          <ul class="menu__inner menu__inner--desktop">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+
+          <ul class="menu__inner menu__inner--mobile">
+
+            <li><a href="https://mikezczyyhm.github.io/index.xml">[RSS]</a></li>
+
+            <li><a href="https://twitter.com/sirstr">[Twitter]</a></li>
+
+            <li><a href="https://github.com/mikezczyyhm">[GitHub]</a></li>
+
+          </ul>
+        </nav>
+
+      </header>
+
+      <div class="content">
+
+        <div class="post">
+          <h1 class="post-title">
+            <a
+              href="https://mikezczyyhm.github.io/posts/gameai_racetrack_fuzzy_control/">Intelligent Vehicle Control with Fuzzy Logic</a>
+          </h1>
+          <div class="post-meta">
+            <span class="post-date">
+              2021-04-15
+            </span>
+
+          </div>
+
+          <span class="post-tags">
+
+            #<a href="https://mikezczyyhm.github.io/tags/programming-theory/">Programming theory</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/game-ai/">Game AI</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/algorithms/">Algorithms</a>&nbsp;
+
+            #<a
+              href="https://mikezczyyhm.github.io/tags/fuzzy-logic/">Fuzzy Logic</a>&nbsp;
+
+          </span>
+
+          <div class="post-content">
+            <div>
+
+              <p>Racing games have always been a fascinating domain for artificial intelligence research, combining the need for precise control with real-time decision making under uncertainty. In this project, I implemented an intelligent racing vehicle that uses fuzzy logic to navigate complex tracks autonomously while maintaining competitive speeds and avoiding collisions.</p>
+
+              <h2 id="the-challenge">The Challenge</h2>
+
+              <p>Traditional control systems for racing vehicles often struggle with the nuanced decision-making required for optimal track navigation. Binary logic falls short when dealing with situations like "how much should I slow down for this upcoming turn?" or "when exactly should I start steering into a corner?" These scenarios require a more human-like reasoning approach that can handle degrees of uncertainty and partial truths.</p>
+
+              <h2 id="fuzzy-logic-approach">Fuzzy Logic Approach</h2>
+
+              <p>Fuzzy logic provides an elegant solution by allowing variables to have degrees of membership in multiple sets simultaneously. Instead of crisp boolean values, we work with membership functions that represent concepts like "fast," "medium," and "slow" as continuous curves rather than discrete boundaries.</p>
+
+              <h3 id="input-variables">Input Variables</h3>
+
+              <p>The AI vehicle considers several key inputs for decision making:</p>
+
+              <ul>
+                <li><strong>Distance to Next Waypoint</strong>: How far the vehicle is from the next track checkpoint</li>
+                <li><strong>Angular Distance to Target</strong>: The angle difference between current heading and desired direction</li>
+                <li><strong>Current Speed</strong>: The vehicle's velocity magnitude</li>
+                <li><strong>Track Curvature</strong>: How sharp the upcoming turn is</li>
+                <li><strong>Proximity to Track Edges</strong>: Distance to track boundaries for collision avoidance</li>
+              </ul>
+
+              <h3 id="membership-functions">Membership Functions</h3>
+
+              <p>Each input variable is mapped to linguistic terms using carefully designed membership functions. For example, speed might be categorized as "slow" (0-30 mph), "medium" (20-60 mph), and "fast" (50-100 mph), with overlapping ranges to capture the fuzzy nature of these concepts.</p>
+
+              <h3 id="rule-based-system">Rule-Based System</h3>
+
+              <p>The heart of the fuzzy controller lies in its rule base, which encodes racing expertise in the form of IF-THEN rules:</p>
+
+              <ul>
+                <li>"IF the angular distance is large AND speed is fast THEN decrease throttle and increase steering"</li>
+                <li>"IF approaching a sharp turn AND distance is close THEN reduce speed significantly"</li>
+                <li>"IF on straight track AND speed is slow THEN increase throttle"</li>
+              </ul>
+
+              <h2 id="implementation-architecture">Implementation Architecture</h2>
+
+              <h3 id="perception-system">Perception System</h3>
+
+              <p>The vehicle uses Unity's physics system and PathTracker component to gather environmental information. Raycast sensors detect track boundaries and obstacles, while the path following system provides waypoint data and curvature information.</p>
+
+              <h3 id="fuzzy-inference-engine">Fuzzy Inference Engine</h3>
+
+              <p>Built on the Tochas FuzzyLogic framework, the inference engine processes sensor inputs through:</p>
+
+              <ol>
+                <li><strong>Fuzzification</strong>: Converting crisp sensor values into fuzzy membership degrees</li>
+                <li><strong>Rule Evaluation</strong>: Applying the rule base to determine output fuzzy sets</li>
+                <li><strong>Aggregation</strong>: Combining multiple rule outputs using appropriate fuzzy operators</li>
+                <li><strong>Defuzzification</strong>: Converting fuzzy outputs back to crisp control values</li>
+              </ol>
+
+              <h3 id="vehicle-control">Vehicle Control</h3>
+
+              <p>The defuzzified outputs directly control the vehicle's actuators:</p>
+
+              <ul>
+                <li><strong>Throttle Control</strong>: Manages acceleration and braking based on speed requirements</li>
+                <li><strong>Steering Control</strong>: Adjusts wheel angle for path following and obstacle avoidance</li>
+                <li><strong>Brake Control</strong>: Applies emergency braking when collision risk is high</li>
+              </ul>
+
+              <h2 id="performance-optimization">Performance Optimization</h2>
+
+              <h3 id="adaptive-learning">Adaptive Learning</h3>
+
+              <p>While the base fuzzy system provides solid performance, the implementation includes mechanisms for parameter tuning based on track performance. The system can adjust membership function boundaries and rule weights to optimize lap times while maintaining safety.</p>
+
+              <h3 id="computational-efficiency">Computational Efficiency</h3>
+
+              <p>Fuzzy inference can be computationally expensive for real-time applications. The implementation uses several optimization techniques:</p>
+
+              <ul>
+                <li><strong>Rule Pruning</strong>: Eliminating rules that rarely fire or have minimal impact</li>
+                <li><strong>Lookup Tables</strong>: Pre-computing membership values for common input ranges</li>
+                <li><strong>Hierarchical Control</strong>: Using different control frequencies for different subsystems</li>
+              </ul>
+
+              <h2 id="challenges-and-solutions">Challenges and Solutions</h2>
+
+              <h3 id="rule-conflicts">Rule Conflicts</h3>
+
+              <p>One of the main challenges in fuzzy systems is handling conflicting rules. For instance, one rule might suggest accelerating while another recommends braking. The implementation uses weighted averaging and priority systems to resolve such conflicts gracefully.</p>
+
+              <h3 id="parameter-tuning">Parameter Tuning</h3>
+
+              <p>Designing effective membership functions and rule weights requires extensive testing and iteration. The project includes a parameter tuning framework that allows rapid prototyping of different fuzzy configurations.</p>
+
+              <h3 id="edge-case-handling">Edge Case Handling</h3>
+
+              <p>Racing scenarios can present extreme situations not covered by the standard rule base. The system includes safety override mechanisms that can take control when the fuzzy controller produces unsafe outputs.</p>
+
+              <h2 id="results-and-insights">Results and Insights</h2>
+
+              <p>The fuzzy logic approach proved highly effective for racing vehicle control, demonstrating several key advantages:</p>
+
+              <ul>
+                <li><strong>Smooth Control</strong>: Unlike binary controllers, the fuzzy system produces smooth, natural-looking vehicle behavior</li>
+                <li><strong>Robust Performance</strong>: The system handles track variations and unexpected situations gracefully</li>
+                <li><strong>Interpretable Logic</strong>: The rule-based structure makes the AI's decision-making process transparent and debuggable</li>
+                <li><strong>Easy Customization</strong>: Different racing styles can be achieved by adjusting rules and membership functions</li>
+              </ul>
+
+              
+
+              
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer class="footer">
+        <div class="footer__inner">
+          <div class="copyright copyright--user">
+            <span>(c) Michael 2021</span>
+          </div>
+        </footer>
+
+        <script src="https://mikezczyyhm.github.io/assets/main.js"></script>
+        <script src="https://mikezczyyhm.github.io/assets/prism.js"></script>
+
+      </div>
+
+    </body>
+  </html>
